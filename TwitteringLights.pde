@@ -46,7 +46,9 @@ String keywords[] = {
 };
 
 // Number of pre-programmed chases that are in your ColorNodes
-static int maxPrograms = 18;
+// 19 for 1.0
+// 26 for 1.1
+static int maxPrograms = 26;
 
 // A place to hold the list of special commands
 // {[text to match], [pre-programmed chase to run]}
@@ -131,7 +133,7 @@ StatusListener listener = new StatusListener() {
     
     if (pgm.length() > 0) {
       // if random, select a program from 0 to maxPrograms
-      if (pgm=="99") pgm = Integer.toString(int(random(maxPrograms + 1)));
+      if (pgm=="99") pgm = Integer.toString(int(random(maxPrograms)));
       command = "1,0,0,0,0,0,0," + pgm + ",0,1 l";
     }
     else if (nextColor.length() > 0) {
