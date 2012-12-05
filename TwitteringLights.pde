@@ -125,21 +125,26 @@ StatusListener listener = new StatusListener() {
     // New tweet received    
     println("@" + status.getUser().getScreenName() + " - " + status.getText());
     
+    // A place to build the serial command
     String command = "";
 
     // Parse the message text
     String pgm = getProgram(status.getText());
     String nextColor = getColor(status.getText());
     
+    // Was a program found?
     if (pgm.length() > 0) {
       // if random, select a program from 0 to maxPrograms
       if (pgm=="99") pgm = Integer.toString(int(random(maxPrograms)));
       command = "1,0,0,0,0,0,0," + pgm + ",0,1 l";
+      // Build the command to turn on the program
     }
     else if (nextColor.length() > 0) {
       command = "2,0,35," + nextColor + ",200,0,0,1 l";
+      // Build the command to set the color of the lights
     }
     if (command.length() > 0) {
+      // A command was created, send it to the ColorNode(s)
       println("Writing command to serial: " + command);
       port.write(command);
     }
@@ -165,8 +170,12 @@ StatusListener listener = new StatusListener() {
   }
 };
 
-String getProgram(String tweetText) {
+// Search the Tweet text for pre-defined command phrases
+// and return the associated program number of the first one found
+String getProgram(String tweetText) { 
   String result = "";
+  // Loop through each one of the pre-defined command phrases and
+  // search the Tweet text for its presence
   for (int i = 0; i < programs.length; i++) {
     if (tweetText.toLowerCase().indexOf(programs[i][0]) != -1) {
      result = programs[i][1];
@@ -175,11 +184,15 @@ String getProgram(String tweetText) {
   return result;
 }
 
+// Search the Tweet text for color keywords and 
+// return the RGB formula for the first one found
 String getColor(String tweetText) {
   String result = "";
   
+  // Split the Tweet text into one word tokens
   String[] tokens = splitTokens(tweetText);
   
+  // Loop through each word of the tweet and check to see if it is a color
   for (int i = 0; i < tokens.length; i++) {
     for (int j = 0; j < colors.length; j++) {
       if (tokens[i].toLowerCase().equals(colors[j][0])) {
