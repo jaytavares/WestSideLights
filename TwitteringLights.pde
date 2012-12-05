@@ -183,9 +183,13 @@ String getColor(String tweetText) {
   for (int i = 0; i < tokens.length; i++) {
     for (int j = 0; j < colors.length; j++) {
       if (tokens[i].toLowerCase().equals(colors[j][0])) {
+        // A color was found, return the RGB formula and stop looping through colors
         result = colors[j][1];
+        break;
       }
     }
+    // If a color was found, stop looping through the words
+    if (result.length() > 0) break;
   }
   return result;
 }
