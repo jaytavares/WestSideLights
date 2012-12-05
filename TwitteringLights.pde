@@ -33,7 +33,11 @@ static String AccessTokenSecret = "";
 
 // Serial port that the ColorNode controller is connected to
 // Run the sketch to see a list of all available ports
-static int colorNodePort = 4;
+static int colorNodePort = 0;
+
+// Set this to the node id of the ColorNode you want controlled
+// Setting to 255 will broadcast to all ColorNodes
+static int nodeId = 1;
 
 // keywords to watch
 String keywords[] = {
@@ -136,12 +140,12 @@ StatusListener listener = new StatusListener() {
     if (pgm.length() > 0) {
       // if random, select a program from 0 to maxPrograms
       if (pgm=="99") pgm = Integer.toString(int(random(maxPrograms)));
-      command = "1,0,0,0,0,0,0," + pgm + ",0,1 l";
       // Build the command to turn on the program
+      command = "1,0,0,0,0,0,0," + pgm + ",0," + nodeId + " l";
     }
     else if (nextColor.length() > 0) {
-      command = "2,0,35," + nextColor + ",200,0,0,1 l";
       // Build the command to set the color of the lights
+      command = "2,0,35," + nextColor + ",200,0,0," + nodeId + " l";
     }
     if (command.length() > 0) {
       // A command was created, send it to the ColorNode(s)
