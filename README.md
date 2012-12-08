@@ -1,4 +1,4 @@
-TwitteringLights
+\#WestSideLights
 ================
 by @jaytavares 2012
 
