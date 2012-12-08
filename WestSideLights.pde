@@ -1,8 +1,7 @@
 import processing.serial.*;
 
 /*
-TwitteringLights
-#westsidelights
+#WestSideLights
 2012 Jay Tavares
 
 Control your Christmas lights via Twitter
