@@ -18,7 +18,7 @@ Creators of Cheerlights (http://cheerlights.com) for the inspiration.
 // INSTRUCTIONS
 //
 // 1. Go to https://dev.twitter.com/apps
-// 2. (If you haven't already) Create a new application for your TwitteringLights
+// 2. (If you haven't already) Create a new application for your WestSideLights
 // 3. At the bottom of the application detail page, click "Create my access token"
 // 4. Copy & paste your Consumer key, Consumer secret, Access token, and Access token secret below:
 
@@ -36,9 +36,10 @@ static int colorNodePort = 0;
 
 // Set this to the node id of the ColorNode you want controlled
 // Setting to 255 will broadcast to all ColorNodes
-static int nodeId = 1;
+static int nodeId = 255;
 
-// keywords to watch
+// Keywords to watch
+// If no keywords are provided, a random sample of tweets will be collected
 String keywords[] = {
   "#westsidelights",
   "@westsidelights",
@@ -49,8 +50,8 @@ String keywords[] = {
 };
 
 // Number of pre-programmed chases that are in your ColorNodes
-// 19 for 1.0
-// 26 for 1.1
+// 19 for ColorNode 1.0
+// 26 for ColorNode 1.1
 static int maxPrograms = 26;
 
 // A place to hold the list of special commands
@@ -66,6 +67,8 @@ String[][] programs = {
 };
 
 // Recipes for the colors
+// 24-bit color
+// Colors are identified with three decimal values from 0-15: R, G, B
 String[][] colors = {
   {"red", "15,0,0"},
   {"green", "0,15,0"},
@@ -94,6 +97,7 @@ void setup() {
   // Configure serial port connection
   
   // List all the available serial ports:
+  println("Available serial ports:");
   println(Serial.list());
   // Open the correct serial port from the list (specified above)
   port = new Serial(this, Serial.list()[colorNodePort], 57600);
@@ -144,7 +148,7 @@ StatusListener listener = new StatusListener() {
     }
     else if (nextColor.length() > 0) {
       // Build the command to set the color of the lights
-      command = "2,0,35," + nextColor + ",200,0,0," + nodeId + " l";
+      command = "2,0,36," + nextColor + ",200,0,0," + nodeId + " l";
     }
     if (command.length() > 0) {
       // A command was created, send it to the ColorNode(s)
