@@ -2,7 +2,7 @@
 ================
 [westsidelights.com](http://www.westsidelights.com)
 
-by @jaytavares 2012
+by @jaytavares 2013
 
 Control your Christmas lights via Twitter!
 ------------------------------------------
