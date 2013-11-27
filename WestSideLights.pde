@@ -2,7 +2,7 @@ import processing.serial.*;
 
 /*
 #WestSideLights
-2012 Jay Tavares
+2013 Jay Tavares
 
 Control your Christmas lights via Twitter
 
@@ -69,6 +69,7 @@ String[][] programs = {
 // Recipes for the colors
 // 24-bit color
 // Colors are identified with three decimal values from 0-15: R, G, B
+// Color names are matched using regular expressions. This helps with multiword colors.
 String[][] colors = {
   {"red", "15,0,0"},
   {"green", "0,15,0"},
@@ -77,14 +78,15 @@ String[][] colors = {
   {"cyan", "0,15,15"},
   {"magenta", "15,0,15"},
   {"black", "0,0,0"},
-  {"white", "15,15,15"},
-  {"warmwhite", "15,7,2"},
-  {"purple", "10,3,13"},
-  {"orange", "15,1,0"},
-  {"paleorange","8,1,0"},
   {"indigo","6,0,15"},
   {"violet","8,0,15"},
-  {"chartreuse", "7,15,0"}
+  {"chartreuse", "7,15,0"},
+  {"purple", "10,3,13"},
+  // multi word colors are matched a little differently
+  {"(?<!warm\\s?)white", "15,15,15"}, // matches white, but not warm white or warmwhite
+  {"warm\\s?white", "15,7,2"}, // matches warm white or warmwhite
+  {"(?<!pale\\s?)orange", "15,1,0"}, // matches orange, but not pale orange or paleorange
+  {"pale\\s?orange","8,1,0"} // matches pale orange or paleorange
 };
 
 /////////////////// End Configuration ///////////////////
@@ -193,23 +195,13 @@ String getProgram(String tweetText) {
 
 // Search the Tweet text for color keywords and 
 // return the RGB formula for the first one found
-String getColor(String tweetText) {
+String getColor(String tweet){
+  // Returns code for first color in tweet
   String result = "";
-  
-  // Split the Tweet text into one word tokens
-  String[] tokens = splitTokens(tweetText);
-  
-  // Loop through each word of the tweet and check to see if it is a color
-  for (int i = 0; i < tokens.length; i++) {
-    for (int j = 0; j < colors.length; j++) {
-      if (tokens[i].toLowerCase().equals(colors[j][0])) {
-        // A color was found, return the RGB formula and stop looping through colors
-        result = colors[j][1];
-        break;
-      }
-    }
-    // If a color was found, stop looping through the words
-    if (result.length() > 0) break;
+  for(int i = 0; i < colors.length; i++){
+    // Disable case sensitivity in regex match with (?i)
+    String[] m1 = match(tweet, "(?i)"+colors[i][0]);
+    if(m1 != null) result = colors[i][1];
   }
   return result;
 }
