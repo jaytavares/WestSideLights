@@ -57,7 +57,8 @@ static int maxPrograms = 26;
 // A place to hold the list of special commands
 // {[text to match], [pre-programmed chase to run]}
 // 99 : Randomly choose a chase
-String[][] programs = {  
+String[][] programs = {
+  {"multi",             "1"},
   {"usa",              "14"},
   {"feliz navidad",    "15"},
   {"happy x-mas",      "16"},
@@ -67,7 +68,7 @@ String[][] programs = {
 };
 
 // Recipes for the colors
-// 24-bit color
+// 12-bit color
 // Colors are identified with three decimal values from 0-15: R, G, B
 // Color names are matched using regular expressions. This helps with multiword colors.
 String[][] colors = {
@@ -80,8 +81,12 @@ String[][] colors = {
   {"black", "0,0,0"},
   {"indigo","6,0,15"},
   {"violet","8,0,15"},
+  {"lavender", "14,14,15"},
   {"chartreuse", "7,15,0"},
   {"purple", "10,3,13"},
+  {"turquoise", "4,14,13"},
+  {"hooloovoo", "1,5,11"},
+  {"pink", "15,6,8"},
   // multi word colors are matched a little differently
   {"(?<!warm\\s?)white", "15,15,15"}, // matches white, but not warm white or warmwhite
   {"warm\\s?white", "15,7,2"}, // matches warm white or warmwhite
