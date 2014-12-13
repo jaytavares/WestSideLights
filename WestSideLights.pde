@@ -106,6 +106,7 @@ void setup() {
   // List all the available serial ports:
   println("Available serial ports:");
   println(Serial.list());
+  
   // Open the correct serial port from the list (specified above)
   port = new Serial(this, Serial.list()[colorNodePort], 57600);
   
@@ -135,6 +136,7 @@ private static AccessToken loadAccessToken() {
 
 // This listens for new tweet
 StatusListener listener = new StatusListener() {
+  
   public void onStatus(Status status) {
     // New tweet received    
     println("@" + status.getUser().getScreenName() + " - " + status.getText());
@@ -177,6 +179,10 @@ StatusListener listener = new StatusListener() {
   
   public void onScrubGeo(long userId, long upToStatusId) {
     println("Got scrub_geo event userId:" + userId + " upToStatusId:" + upToStatusId);
+  }
+  
+  public void onStallWarning(StallWarning warning) {
+    println("Get status stall warning: " + warning.getMessage());
   }
   
   public void onException(Exception ex) {
