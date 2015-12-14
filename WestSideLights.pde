@@ -59,6 +59,7 @@ static int maxPrograms = 26;
 // 99 : Randomly choose a chase
 String[][] programs = {
   {"multi",             "1"},
+  {"carnival",          "2"},
   {"usa",              "14"},
   {"feliz navidad",    "15"},
   {"happy x-mas",      "16"},
